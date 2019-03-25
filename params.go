@@ -9,6 +9,7 @@ type Params struct {
 	Destination string `json:"destination,omitempty"`
 	ACL         string `json:"acl,omitempty"`
 	Compress    *bool  `json:"compress,omitempty"`
+	Parallel    *bool  `json:"parallel,omitempty"`
 }
 
 // SetDefaults fills in empty fields with convention-based defaults
@@ -16,5 +17,9 @@ func (p *Params) SetDefaults() {
 	if p.Compress == nil {
 		trueValue := true
 		p.Compress = &trueValue
+	}
+	if p.Parallel == nil {
+		trueValue := true
+		p.Parallel = &trueValue
 	}
 }

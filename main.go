@@ -119,6 +119,9 @@ func main() {
 		if params.Compress != nil && *params.Compress {
 			cpArgs = append(cpArgs, "-Z")
 		}
+		if params.Parallel != nil && *params.Parallel {
+			cpArgs = append(cpArgs, "-m")
+		}
 
 		cpArgs = append(cpArgs, params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination))
 
