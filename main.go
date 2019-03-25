@@ -109,7 +109,7 @@ func main() {
 	switch params.Action {
 	case "copy":
 
-		runCommand("gsutil", []string{"cp", "-m", "-r", params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination)})
+		runCommand("gsutil", []string{"cp", "-m", "-J", "-r", params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination)})
 
 		break
 	}
