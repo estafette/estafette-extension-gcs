@@ -112,7 +112,7 @@ func main() {
 	switch params.Action {
 	case "copy":
 
-		cpArgs := []string{"cp", "-r", params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination)}
+		cpArgs := []string{"cp", "-r"}
 		if params.ACL != "" {
 			cpArgs = append(cpArgs, "-a", params.ACL)
 		}
