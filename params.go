@@ -19,7 +19,7 @@ func (p *Params) SetDefaults() {
 		p.Compress = &trueValue
 	}
 	if p.Parallel == nil {
-		trueValue := true
-		p.Parallel = &trueValue
+		falseValue := false
+		p.Parallel = &falseValue
 	}
 }
