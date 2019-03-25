@@ -109,7 +109,14 @@ func main() {
 	switch params.Action {
 	case "copy":
 
-		runCommand("gsutil", []string{"cp", "-m", "-J", "-r", params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination)})
+		cpArgs := []string{"cp", "-m", "-J", "-r", params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination)}
+		if params.ACL != "" {
+			cpArgs = append(cpArgs, "-a", params.ACL)
+		}
+
+		cpArgs = append(cpArgs, params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination))
+
+		runCommand("gsutil", cpArgs)
 
 		break
 	}

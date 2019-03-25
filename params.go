@@ -7,4 +7,5 @@ type Params struct {
 	Bucket      string `json:"bucket,omitempty"`
 	Source      string `json:"source,omitempty"`
 	Destination string `json:"destination,omitempty"`
+	ACL         string `json:"acl,omitempty"`
 }
