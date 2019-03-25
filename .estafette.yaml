@@ -40,8 +40,6 @@ stages:
     repositories:
     - extensions
     path: ./publish
-    copy:
-    - templates
 
   push-to-docker-hub:
     image: extensions/docker:dev
