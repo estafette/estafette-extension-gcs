@@ -8,18 +8,23 @@ type Params struct {
 	Source      string `json:"source,omitempty"`
 	Destination string `json:"destination,omitempty"`
 	ACL         string `json:"acl,omitempty"`
+	Recursive   *bool  `json:"recursive,omitempty"`
 	Compress    *bool  `json:"compress,omitempty"`
 	Parallel    *bool  `json:"parallel,omitempty"`
 }
 
 // SetDefaults fills in empty fields with convention-based defaults
 func (p *Params) SetDefaults() {
+	if p.Recursive == nil {
+		trueValue := true
+		p.Recursive = &trueValue
+	}
 	if p.Compress == nil {
 		trueValue := true
 		p.Compress = &trueValue
 	}
 	if p.Parallel == nil {
-		falseValue := false
-		p.Parallel = &falseValue
+		trueValue := true
+		p.Parallel = &trueValue
 	}
 }

@@ -112,18 +112,23 @@ func main() {
 	switch params.Action {
 	case "copy":
 
-		cpArgs := []string{"cp"}
+		cpArgs := []string{}
 		if params.Parallel != nil && *params.Parallel {
 			cpArgs = append(cpArgs, "-m")
 		}
+
+		cpArgs = append(cpArgs, "cp")
 		if params.ACL != "" {
 			cpArgs = append(cpArgs, "-a", params.ACL)
 		}
 		if params.Compress != nil && *params.Compress {
 			cpArgs = append(cpArgs, "-Z")
 		}
+		if params.Recursive != nil && *params.Recursive {
+			cpArgs = append(cpArgs, "-r")
+		}
 
-		cpArgs = append(cpArgs, "-r", params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination))
+		cpArgs = append(cpArgs, params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination))
 
 		runCommand("gsutil", cpArgs)
 
