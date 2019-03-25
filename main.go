@@ -73,6 +73,9 @@ func main() {
 		log.Fatal("Failed unmarshalling parameters: ", err)
 	}
 
+	logInfo("Setting defaults for parameters that are not set in the manifest...")
+	params.SetDefaults()
+
 	logInfo("Retrieving service account email from credentials...")
 	var keyFileMap map[string]interface{}
 	err = json.Unmarshal([]byte(credential.AdditionalProperties.ServiceAccountKeyfile), &keyFileMap)
@@ -109,9 +112,12 @@ func main() {
 	switch params.Action {
 	case "copy":
 
-		cpArgs := []string{"cp", "-m", "-J", "-r", params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination)}
+		cpArgs := []string{"cp", "-r", params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination)}
 		if params.ACL != "" {
 			cpArgs = append(cpArgs, "-a", params.ACL)
+		}
+		if params.Compress != nil && *params.Compress {
+			cpArgs = append(cpArgs, "-Z")
 		}
 
 		cpArgs = append(cpArgs, params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination))
