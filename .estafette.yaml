@@ -2,7 +2,6 @@ builder:
   track: dev
 
 labels:
-  app: estafette-extension-gcs
   app-group: estafette-ci-extensions
   container: gcs
   team: estafette-team
