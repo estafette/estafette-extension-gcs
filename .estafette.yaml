@@ -46,8 +46,6 @@ stages:
     container: ${ESTAFETTE_LABEL_CONTAINER}
     repositories:
     - extensions
-    tags:
-    - dev
 
   slack-notify:
     image: extensions/slack-build-status:dev
@@ -59,6 +57,21 @@ stages:
       status == 'failed'
 
 releases:
+  dev:
+    triggers:
+    - pipeline:
+        name: self
+        branch: .+
+    stages:
+      tag-container-image:
+        image: extensions/docker:stable
+        action: tag
+        container: ${ESTAFETTE_LABEL_CONTAINER}
+        repositories:
+        - extensions
+        tags:
+        - dev
+
   beta:
     stages:
       tag-container-image:
