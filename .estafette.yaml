@@ -62,8 +62,6 @@ releases:
     - pipeline:
         name: self
         branch: .+
-      releases:
-        version: current
     stages:
       tag-container-image:
         image: extensions/docker:stable
