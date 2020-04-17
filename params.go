@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"path/filepath"
+)
+
 // Params is used to parameterize the deployment, set from custom properties in the manifest
 type Params struct {
 	// control params
@@ -27,4 +32,21 @@ func (p *Params) SetDefaults() {
 		trueValue := true
 		p.Parallel = &trueValue
 	}
+}
+
+// Validate checks whether all parameters have valid values
+func (p *Params) Validate() (bool, []error) {
+
+	errors := []error{}
+
+	sourcePath, err := filepath.Abs(p.Source)
+	if err != nil {
+		errors = append(errors, err)
+	}
+
+	if sourcePath == "/key-file.json" || sourcePath == "/" {
+		errors = append(errors, fmt.Errorf("Source '%v' is not allowed; use a source inside the working directory", p.Source))
+	}
+
+	return len(errors) == 0, errors
 }

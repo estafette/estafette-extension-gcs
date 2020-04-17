@@ -75,6 +75,12 @@ func main() {
 	log.Info().Msg("Setting defaults for parameters that are not set in the manifest...")
 	params.SetDefaults()
 
+	log.Info().Msg("Validating parameters...")
+	valid, errors = params.Validate()
+	if !valid {
+		log.Fatal().Msgf("Not all fields are valid: %v", errors)
+	}
+
 	log.Info().Msg("Retrieving service account email from credentials...")
 	var keyFileMap map[string]interface{}
 	err = json.Unmarshal([]byte(credential.AdditionalProperties.ServiceAccountKeyfile), &keyFileMap)
