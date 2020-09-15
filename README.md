@@ -6,7 +6,7 @@ Please file any issues related to Estafette CI at https://github.com/estafette/e
 
 ## Estafette-extension-gcs
 
-This extension helps to copy files into a Google Cloud Storage bucket.
+This extension helps to copy files from/to a Google Cloud Storage bucket.
 
 ## Development
 

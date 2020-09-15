@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"runtime"
+	"strings"
 
 	"github.com/alecthomas/kingpin"
 	foundation "github.com/estafette/estafette-foundation"
@@ -133,7 +134,12 @@ func main() {
 			cpArgs = append(cpArgs, "-r")
 		}
 
-		cpArgs = append(cpArgs, params.Source, fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination))
+		destination := params.Destination
+		// Backwards-compatibility to support destination without full GCS URL
+		if !strings.HasPrefix(params.Source, "gs://") && !strings.HasPrefix(params.Source, "gs://") {
+			destination = fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination)
+		}
+		cpArgs = append(cpArgs, params.Source, destination)
 
 		foundation.RunCommandWithArgs(ctx, "gsutil", cpArgs)
 

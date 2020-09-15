@@ -46,4 +46,18 @@ func TestValidate(t *testing.T) {
 		assert.True(t, valid)
 		assert.True(t, len(errors) == 0)
 	})
+
+	t.Run("ReturnsFalseIfSourceDestinationAreGcs", func(t *testing.T) {
+
+		params := Params{
+			Source:      "gs://estafette-work",
+			Destination: "gs://estafette-work2",
+		}
+
+		// act
+		valid, errors := params.Validate()
+
+		assert.False(t, valid)
+		assert.True(t, len(errors) > 0)
+	})
 }
