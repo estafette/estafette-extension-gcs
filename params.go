@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"path/filepath"
+	"strings"
 )
 
 // Params is used to parameterize the deployment, set from custom properties in the manifest
@@ -39,9 +40,18 @@ func (p *Params) Validate() (bool, []error) {
 
 	errors := []error{}
 
-	sourcePath, err := filepath.Abs(p.Source)
+	sourcePath, err := validPath(p.Source)
 	if err != nil {
 		errors = append(errors, err)
+	}
+
+	destPath, err := validPath(p.Destination)
+	if err != nil {
+		errors = append(errors, err)
+	}
+
+	if isGcsPath(sourcePath) && isGcsPath(destPath) {
+		errors = append(errors, fmt.Errorf("Either Source or Destination might be a GCS path, not both"))
 	}
 
 	if sourcePath == "/key-file.json" || sourcePath == "/" {
@@ -49,4 +59,15 @@ func (p *Params) Validate() (bool, []error) {
 	}
 
 	return len(errors) == 0, errors
+}
+
+func isGcsPath(path string) bool {
+	return strings.HasPrefix(path, "gs://")
+}
+
+func validPath(path string) (string, error) {
+	if isGcsPath(path) {
+		return path, nil
+	}
+	return filepath.Abs(path)
 }
