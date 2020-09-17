@@ -136,7 +136,7 @@ func main() {
 
 		destination := params.Destination
 		// Backwards-compatibility to support destination without full GCS URL
-		if !strings.HasPrefix(params.Source, "gs://") && !strings.HasPrefix(params.Source, "gs://") {
+		if !strings.HasPrefix(params.Source, "gs://") && !strings.HasPrefix(params.Destination, "gs://") {
 			destination = fmt.Sprintf("gs://%v/%v", params.Bucket, params.Destination)
 		}
 		cpArgs = append(cpArgs, params.Source, destination)
