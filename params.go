@@ -49,6 +49,9 @@ func (p *Params) Validate(allowedBuckets []string) (bool, []error) {
 	}
 
 	allowedBucket := false
+	if len(allowedBuckets) <= 0 {
+		allowedBucket = true
+	}
 	for _, b := range allowedBuckets {
 		if p.Bucket == b {
 			allowedBucket = true
