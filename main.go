@@ -25,7 +25,7 @@ var (
 var (
 	// flags
 	paramsJSON      = kingpin.Flag("params", "Extension parameters, created from custom properties.").Envar("ESTAFETTE_EXTENSION_CUSTOM_PROPERTIES").Required().String()
-	credentialsJSON = kingpin.Flag("credentials", "GKE credentials configured at service level, passed in to this trusted extension.").Envar("ESTAFETTE_CREDENTIALS_KUBERNETES_ENGINE").Required().String()
+	credentialsJSON = kingpin.Flag("credentials", "GCS credentials configured at service level, passed in to this trusted extension.").Envar("ESTAFETTE_CREDENTIALS_CLOUD_STORAGE").Required().String()
 )
 
 func main() {
@@ -53,7 +53,7 @@ func main() {
 	}
 
 	log.Info().Msg("Unmarshalling injected credentials...")
-	var credentials []GKECredentials
+	var credentials []GCSCredentials
 	err = json.Unmarshal([]byte(*credentialsJSON), &credentials)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Failed unmarshalling injected credentials")
@@ -76,7 +76,8 @@ func main() {
 	params.SetDefaults()
 
 	log.Info().Msg("Validating parameters...")
-	valid, errors = params.Validate()
+	allowedBuckets := credential.AdditionalProperties.AllowedBuckets
+	valid, errors = params.Validate(allowedBuckets)
 	if !valid {
 		log.Fatal().Msgf("Not all fields are valid: %v", errors)
 	}
