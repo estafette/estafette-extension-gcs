@@ -76,8 +76,7 @@ func main() {
 	params.SetDefaults()
 
 	log.Info().Msg("Validating parameters...")
-	allowedBuckets := credential.AdditionalProperties.AllowedBuckets
-	valid, errors = params.Validate(allowedBuckets)
+	valid, errors = params.Validate()
 	if !valid {
 		log.Fatal().Msgf("Not all fields are valid: %v", errors)
 	}

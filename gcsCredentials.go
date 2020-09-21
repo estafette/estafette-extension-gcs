@@ -9,9 +9,8 @@ type GCSCredentials struct {
 
 // GCSCredentialAdditionalProperties contains the non standard fields for this type of credentials
 type GCSCredentialAdditionalProperties struct {
-	AllowedBuckets        []string `json:"allowedBuckets,omitempty"`
-	Project               string   `json:"project,omitempty"`
-	ServiceAccountKeyfile string   `json:"serviceAccountKeyfile,omitempty"`
+	Project               string `json:"project,omitempty"`
+	ServiceAccountKeyfile string `json:"serviceAccountKeyfile,omitempty"`
 }
 
 // GetCredentialsByName returns a credential if the name exists

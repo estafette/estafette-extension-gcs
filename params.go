@@ -35,7 +35,7 @@ func (p *Params) SetDefaults() {
 }
 
 // Validate checks whether all parameters have valid values
-func (p *Params) Validate(allowedBuckets []string) (bool, []error) {
+func (p *Params) Validate() (bool, []error) {
 
 	errors := []error{}
 
@@ -46,19 +46,6 @@ func (p *Params) Validate(allowedBuckets []string) (bool, []error) {
 
 	if sourcePath == "/key-file.json" || sourcePath == "/" {
 		errors = append(errors, fmt.Errorf("Source '%v' is not allowed; use a source inside the working directory", p.Source))
-	}
-
-	allowedBucket := false
-	if len(allowedBuckets) <= 0 {
-		allowedBucket = true
-	}
-	for _, b := range allowedBuckets {
-		if p.Bucket == b {
-			allowedBucket = true
-		}
-	}
-	if !allowedBucket {
-		errors = append(errors, fmt.Errorf("Bucket '%v' is not allowed for this credential", p.Bucket))
 	}
 
 	return len(errors) == 0, errors
