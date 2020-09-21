@@ -25,7 +25,7 @@ var (
 var (
 	// flags
 	paramsJSON      = kingpin.Flag("params", "Extension parameters, created from custom properties.").Envar("ESTAFETTE_EXTENSION_CUSTOM_PROPERTIES").Required().String()
-	credentialsJSON = kingpin.Flag("credentials", "GCS credentials configured at service level, passed in to this trusted extension.").Envar("ESTAFETTE_CREDENTIALS_CLOUD_STORAGE").Required().String()
+	credentialsJSON = kingpin.Flag("credentials", "GCS credentials configured at service level, passed in to this trusted extension.").Envar("ESTAFETTE_CREDENTIALS_GOOGLE_CLOUD_STORAGE").Required().String()
 )
 
 func main() {
