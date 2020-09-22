@@ -11,9 +11,9 @@ type CredentialsParam struct {
 
 // SetDefaults fills in empty fields with convention-based defaults
 func (p *CredentialsParam) SetDefaults(releaseName string) {
-	// default credentials to release name prefixed with gke if no override in stage params
+	// default credentials to release name prefixed with gcs if no override in stage params
 	if p.Credentials == "" && releaseName != "" {
-		p.Credentials = fmt.Sprintf("gke-%v", releaseName)
+		p.Credentials = fmt.Sprintf("gcs-%v", releaseName)
 	}
 }
 
