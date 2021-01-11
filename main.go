@@ -26,7 +26,7 @@ var (
 var (
 	// flags
 	paramsJSON      = kingpin.Flag("params", "Extension parameters, created from custom properties.").Envar("ESTAFETTE_EXTENSION_CUSTOM_PROPERTIES").Required().String()
-	credentialsJSON = kingpin.Flag("credentials", "GCS credentials configured at service level, passed in to this trusted extension.").Envar("ESTAFETTE_CREDENTIALS_GOOGLE_CLOUD_STORAGE").Required().String()
+	credentialsPath = kingpin.Flag("credentials-path", "Path to file with GCS credentials configured at service level, passed in to this trusted extension.").Default("/credentials/google_cloud_storage.json").String()
 )
 
 func main() {
@@ -55,9 +55,20 @@ func main() {
 
 	log.Info().Msg("Unmarshalling injected credentials...")
 	var credentials []GCSCredentials
-	err = json.Unmarshal([]byte(*credentialsJSON), &credentials)
-	if err != nil {
-		log.Fatal().Err(err).Msg("Failed unmarshalling injected credentials")
+	// use mounted credential file if present instead of relying on an envvar
+	if runtime.GOOS == "windows" {
+		*credentialsPath = "C:" + *credentialsPath
+	}
+	if foundation.FileExists(*credentialsPath) {
+		log.Info().Msgf("Reading credentials from file at path %v...", *credentialsPath)
+		credentialsFileContent, err := ioutil.ReadFile(*credentialsPath)
+		if err != nil {
+			log.Fatal().Msgf("Failed reading credential file at path %v.", *credentialsPath)
+		}
+		err = json.Unmarshal(credentialsFileContent, &credentials)
+		if err != nil {
+			log.Fatal().Err(err).Msg("Failed unmarshalling injected credentials")
+		}
 	}
 
 	log.Info().Msgf("Checking if credential %v exists...", credentialsParam.Credentials)
